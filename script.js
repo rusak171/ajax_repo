@@ -6,17 +6,16 @@ if(window.XMLHttpRequest) {
     request = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
-request.open('GET', 'data.xml'); //false => sync, true(default) => async
+request.open('GET', 'data.json'); //false => sync, true(default) => async
 request.onreadystatechange = function () {
     if (request.readyState === 4 && request.status === 200) {
-        var modify = document.getElementById('update');
-        var nodeArr = request.responseXML.getElementsByTagName('TITLE');
+        var items = JSON.parse(request.responseText);
         var outputHTML = "<ul>";
-        for(var i = 0; i < nodeArr.length; ++i) {
-            outputHTML += "<li>" + nodeArr[i].firstChild.nodeValue + "</li>";
+        for(var key in items) {
+            outputHTML += "<li>" + items[key].firstName + ' ' + items[key].lastName + "</li>";
         }
         outputHTML += "</ul";
-        modify.innerHTML = outputHTML;
+        document.getElementById('update').innerHTML = outputHTML;   
     }
 }
 request.send();
